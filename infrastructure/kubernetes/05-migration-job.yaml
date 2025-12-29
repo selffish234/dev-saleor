@@ -13,7 +13,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: migrate
-        image: ${ECR_BACKEND_URL}:latest
+        image: 827913617839.dkr.ecr.ap-northeast-2.amazonaws.com/saleor-joon-dev-backend:latest
         command: ["python", "manage.py", "migrate", "--noinput"]
         envFrom:
         - configMapRef:
@@ -51,7 +51,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: create-superuser
-        image: ${ECR_BACKEND_URL}:latest
+        image: 827913617839.dkr.ecr.ap-northeast-2.amazonaws.com/saleor-joon-dev-backend:latest
         command: 
         - python
         - manage.py
