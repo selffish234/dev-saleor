@@ -30,7 +30,7 @@ spec:
       serviceAccountName: backend-sa
       containers:
       - name: backend
-        image: 827913617839.dkr.ecr.ap-northeast-2.amazonaws.com/saleor-joon-dev-backend:latest
+        image: 827913617839.dkr.ecr.ap-northeast-2.amazonaws.com/saleor-joon-dev-backend:ff863ace3c3614f2ff376108aa085c3a2d0fec24
         ports:
         - containerPort: 8000
         envFrom:
