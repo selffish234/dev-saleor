@@ -11,8 +11,7 @@ data:
   ALLOWED_HOSTS: "*"
   
   # 중요: ALLOWED_CLIENT_HOSTS 필수 (DEBUG=false 시)
-  # 배포 후 CloudFront 도메인으로 설정 (스크립트가 치환)
-  ALLOWED_CLIENT_HOSTS: "${CLOUDFRONT_DOMAIN}"
+  ALLOWED_CLIENT_HOSTS: "dev.selffish234.cloud"
   
   # SSL 설정 - false! (트러블슈팅 6-3 참고)
   ENABLE_SSL: "false"
@@ -28,21 +27,18 @@ data:
   ENABLE_ACCOUNT_CONFIRMATION_BY_EMAIL: "false"
   ALLOW_LOGIN_WITHOUT_CONFIRMATION: "true"
   
-  # CSRF/CORS - CloudFront 도메인은 배포 후 설정
-  # CSRF_TRUSTED_ORIGINS: "https://YOUR_CLOUDFRONT_DOMAIN"
+  # CSRF/CORS - CloudFront 도메인
+  CSRF_TRUSTED_ORIGINS: "https://dev.selffish234.cloud"
   
   # PUBLIC_URL - 썸네일 URL 생성에 필수! (트러블슈팅 25, 26)
-  # 중요: 커스텀 도메인 사용 시 https로 설정, Backend Pod는 여전히 HTTP 수신
-  PUBLIC_URL: "https://${CLOUDFRONT_DOMAIN}"
+  PUBLIC_URL: "https://dev.selffish234.cloud"
   
   # S3 미디어 스토리지 설정 (트러블슈팅 14, 23, 24)
-  # 스크립트 04-deploy-apps.sh에서 자동 설정됨
-  # 중요: Saleor은 AWS_MEDIA_BUCKET_NAME을 사용함 (AWS_STORAGE_BUCKET_NAME 아님!)
-  AWS_MEDIA_BUCKET_NAME: "${S3_MEDIA_BUCKET}"
-  AWS_MEDIA_CUSTOM_DOMAIN: "${CLOUDFRONT_DOMAIN}"
-  AWS_STORAGE_BUCKET_NAME: "${S3_MEDIA_BUCKET}"
+  AWS_MEDIA_BUCKET_NAME: "saleor-joon-dev-s3-media"
+  AWS_MEDIA_CUSTOM_DOMAIN: "dev.selffish234.cloud"
+  AWS_STORAGE_BUCKET_NAME: "saleor-joon-dev-s3-media"
   AWS_S3_REGION_NAME: "ap-northeast-2"
-  AWS_S3_CUSTOM_DOMAIN: "${CLOUDFRONT_DOMAIN}"
+  AWS_S3_CUSTOM_DOMAIN: "dev.selffish234.cloud"
   DEFAULT_FILE_STORAGE: "saleor.core.storages.S3MediaStorage"
 ---
 # Storefront ConfigMap
