@@ -2,8 +2,11 @@
 
 mgmt vpc는 3tier일 필요 없이 public과 private만 있으면 되고 public은 1개의 az를 가진 서브넷으로 private도 1개의 az를 가진 서브넷으로 구성하면 될 것 같다.
 
-mgmt엔 우선 argo cd와 github action을 위한 것이야.argo cd는 github repository를 바라보다가 github action이 CI를 하면 argocd를 가 그걸 k8s에 적용하는 것이다.
+mgmt엔 우선 argo cd와 github action을 위한 것이야.argo cd는 github actions를 바라보다가 github action이 CI를 완료하면 argocd를 가 그걸 k8s에 적용하는 것이다.
 
+mgmt vpc랑 dev vpc는 서로 peering으로 연결해서 ArgoCD가 dev VPC의 EKS 클러스터에 배포할거야.
+
+ArgoCD 외부 접근을 위한 것으로 ArgoCD UI 접근을 위해서 SSM + Port Forwarding을 사용할 예정이다.
 ### MGMT (2AZ )
 
 VPC: `10.40.0.0/16`
