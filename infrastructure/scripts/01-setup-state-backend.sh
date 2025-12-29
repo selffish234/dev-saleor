@@ -5,8 +5,8 @@
 set -e
 
 AWS_REGION="ap-northeast-2"
-BUCKET_NAME="kyeol-terraform-state"
-TABLE_NAME="kyeol-terraform-locks"
+BUCKET_NAME="kyeol-terraform-state-joon"
+TABLE_NAME="kyeol-terraform-locks-joon"
 
 echo "=== Terraform State Backend 설정 ==="
 

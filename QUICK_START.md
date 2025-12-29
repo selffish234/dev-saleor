@@ -54,7 +54,7 @@ dev-saleor/
 ### 1단계: 스크립트 권한 설정
 
 ```bash
-cd dev-saleor/infrastructure
+cd ./infrastructure
 
 # 스크립트 실행 권한 부여
 chmod +x scripts/*.sh
@@ -74,7 +74,7 @@ chmod +x scripts/*.sh
 **1) terraform.tfvars.example 복사:**
 ```bash
 cd terraform
-cp terraform.tfvars.example terraform.tfvars
+# cp terraform.tfvars.example terraform.tfvars
 ```
 
 **2) 자신의 환경에 맞게 수정:**
@@ -133,8 +133,11 @@ terraform apply
 ### 4단계: kubectl 설정
 
 ```bash
-# kubeconfig 업데이트
-aws eks update-kubeconfig --name kyeol-dev-eks --region ap-northeast-2
+# kubeconfig 업데이트 (Terraform output 활용)
+$(terraform output -raw kubeconfig_command)
+
+# 또는 직접 실행:
+# aws eks update-kubeconfig --name $(terraform output -raw eks_cluster_name) --region ap-northeast-2
 
 # 연결 확인
 kubectl get nodes
@@ -143,7 +146,7 @@ kubectl get nodes
 ### 5단계: Docker 이미지 빌드 & Push
 
 ```bash
-cd dev-saleor/infrastructure
+cd ~/workspace/dev-saleor/infrastructure
 ./scripts/02-build-and-push.sh
 ```
 
@@ -214,15 +217,29 @@ kubectl get pods -n kyeol-dev
 ```
 
 > ✅ **자동 처리되는 항목:**
+> - pnpm 미설치 시 자동 설치
+> - CI=true 설정으로 husky 에러 방지
 > - `.env.production` 파일 자동 생성 (API_URL, STATIC_URL 설정)
 > - Dashboard 빌드 및 S3 업로드
 > - CloudFront 캐시 무효화
 
-> **참고**: Node.js v20 또는 v22 필요. v24에서 오류 발생 시:
+> ⚠️ **Node.js 버전 주의**: v20 또는 v22 필요.
 > ```bash
-> cd ../source/saleor-dashboard
-> npm install @material-ui/icons --legacy-peer-deps
-> npm run build
+> # Node 버전 확인 후 v22로 변경 (nvm 사용 시)
+> nvm install 22 && nvm use 22
+> ```
+
+> 💡 **수동 빌드 방법** (스크립트 실패 시):
+> ```bash
+> cd source/saleor-dashboard
+> CI=true pnpm install
+> pnpm run build
+> 
+> # S3 업로드
+> aws s3 sync build/dashboard s3://$(cd ../../infrastructure/terraform && terraform output -raw s3_static_bucket_name)/dashboard/ --delete
+> 
+> # CloudFront 캐시 무효화
+> aws cloudfront create-invalidation --distribution-id $(cd ../../infrastructure/terraform && terraform output -raw cloudfront_distribution_id) --paths "/dashboard/*"
 > ```
 
 

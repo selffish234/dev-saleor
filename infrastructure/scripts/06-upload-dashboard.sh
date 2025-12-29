@@ -53,11 +53,20 @@ echo "   - .env.production 파일 생성 완료"
 # 기존 빌드 삭제 (경로 설정이 잘못됐을 수 있음)
 rm -rf build
 
-# 의존성 설치 (트러블슈팅: @material-ui/icons 누락 문제 해결)
-npm install --legacy-peer-deps
-npm install @material-ui/icons --legacy-peer-deps 2>/dev/null || true
+# pnpm 설치 확인 (saleor-dashboard는 pnpm 사용)
+if ! command -v pnpm &> /dev/null; then
+    echo "   - pnpm 설치 중..."
+    npm install -g pnpm
+fi
 
-npm run build
+# CI=true 설정: husky prepare 스크립트 스킵 (.git 없는 환경에서 에러 방지)
+# 의존성 설치
+echo "   - 의존성 설치 중 (CI=true로 husky 스킵)..."
+CI=true pnpm install
+
+# 빌드
+echo "   - 빌드 중..."
+pnpm run build
 cd - > /dev/null
 
 # S3 업로드

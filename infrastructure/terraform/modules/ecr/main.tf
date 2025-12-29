@@ -6,6 +6,7 @@
 resource "aws_ecr_repository" "backend" {
   name                 = "${var.project_name}-${var.environment}-backend"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true  # terraform destroy 시 이미지가 있어도 강제 삭제
 
   image_scanning_configuration {
     scan_on_push = true
@@ -22,6 +23,7 @@ resource "aws_ecr_repository" "backend" {
 resource "aws_ecr_repository" "storefront" {
   name                 = "${var.project_name}-${var.environment}-storefront"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true  # terraform destroy 시 이미지가 있어도 강제 삭제
 
   image_scanning_configuration {
     scan_on_push = true

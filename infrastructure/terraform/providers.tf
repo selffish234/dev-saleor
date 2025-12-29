@@ -27,11 +27,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "kyeol-terraform-state"
+    bucket         = "kyeol-terraform-state-joon"
     key            = "dev/terraform.tfstate"
     region         = "ap-northeast-2"
     encrypt        = true
-    dynamodb_table = "kyeol-terraform-locks"
+    dynamodb_table = "kyeol-terraform-locks-joon"
   }
 }
 
