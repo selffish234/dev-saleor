@@ -4,6 +4,15 @@
 
 set -e
 
+# nvm 로드 (비-로그인 셸에서도 npm/node 사용 가능하도록)
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    set +e  # nvm 로드 중 에러 무시
+    source "$NVM_DIR/nvm.sh" --no-use
+    nvm use 22 2>/dev/null || nvm use default 2>/dev/null || true
+    set -e
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # 소스코드 경로 (스크립트 위치 기준 상대 경로)
 SOURCE_DIR="$SCRIPT_DIR/../../source/saleor-dashboard"
@@ -92,4 +101,4 @@ aws cloudfront create-invalidation \
 
 echo ""
 echo "=== 완료! ==="
-echo "Dashboard URL: https://$(cd "$(dirname "$0")/../terraform" && terraform output -raw cloudfront_domain_name)/dashboard/"
+echo "Dashboard URL: https://${FINAL_DOMAIN}/dashboard/"
